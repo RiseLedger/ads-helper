@@ -1,11 +1,11 @@
 import wx
 
 
-class CreateAdvertise(wx.Frame):
+class CreateAdvertisePanel(wx.Frame):
     panel = None
 
     def __init__(self, *args, **kw):
-        super(CreateAdvertise, self).__init__(*args, **kw)
+        super(CreateAdvertisePanel, self).__init__(*args, **kw)
         self.init()
 
     def init(self):

@@ -9,22 +9,37 @@ class AdsHelper(wx.Frame):
     edit_ad = None
     panel = None
 
+    advertise_ids = {
+        'ID_AD_MAIN' : wx.NewId(),
+        'ID_AD_NEW' : wx.NewId(),
+        'ID_AD_EDIT' : wx.NewId()
+    }
+
     def __init__(self, *args, **kw):
         super(AdsHelper, self).__init__(*args, **kw)
         self.init()
 
     def init(self):
         self.loadConfig()
+        self.setPanels()
+        self.setPanelsState()
         self.createGUILayout()
         self.eventsBind()
-        # self.createMenuBar()
+        self.createMenuBar()
         self.createGUIWindow()
 
     def loadConfig(self):
         self.config = Config('config.ini')
 
+    def setPanels(self):
+        pass
+
+    def setPanelsState(self):
+        pass
+
     def eventsBind(self):
-        self.panel.Bind(wx.EVT_RIGHT_DOWN, self.onRightDown)
+        for val in sorted( self.advertise_ids.itervalues() ):
+            self.Bind(wx.EVT_MENU, self.onPanelSwitch, id=val)
 
     def createGUILayout(self):
         self.panel = wx.Panel(self)
@@ -54,7 +69,6 @@ class AdsHelper(wx.Frame):
         self.panel.SetSizer(vbox)
 
     def createGUIWindow(self):
-
         self.SetSize((350, 130))
         self.SetTitle('Ads Helper')
         self.Centre()
@@ -65,7 +79,16 @@ class AdsHelper(wx.Frame):
         menuBar = wx.MenuBar()
 
         for item in menuItems:
-            menuBar.Append(wx.Menu(), item )
+            submenuItems = self.config.getSplit('menubar', item)
+            fMenu = wx.Menu()
+            advertise_keys = self.advertise_ids.keys()
+
+            i = 0
+            for subItem in submenuItems:
+                fMenu.Append(self.advertise_ids[advertise_keys[i]], subItem)
+                i += 1
+
+            menuBar.Append(fMenu, item )
         self.SetMenuBar(menuBar)
 
     def onAdvertiseSelect(self, e):
@@ -73,3 +96,13 @@ class AdsHelper(wx.Frame):
 
     def onRightDown(self, e):
         self.PopupMenu(ContextMenu(self), e.GetPosition())
+
+    def onPanelSwitch(self, event):
+        if event.GetId() == self.advertise_ids['ID_AD_MAIN']:
+            print 'show main panel'
+
+        if event.GetId() == self.advertise_ids['ID_AD_NEW']:
+            print 'show new advertise panel'
+
+        if event.GetId() == self.advertise_ids['ID_AD_EDIT']:
+            print 'show edit advertise panel'

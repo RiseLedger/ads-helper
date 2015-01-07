@@ -1,5 +1,5 @@
 import wx
-from CreateAdvertise import CreateAdvertise
+from CreateAdvertisePanel import CreateAdvertisePanel
 
 
 class ContextMenu(wx.Menu):
@@ -16,5 +16,5 @@ class ContextMenu(wx.Menu):
 
     def onCreateAdvertise(self, e):
         self.parent.panel.Hide()
-        CreateAdvertise(None)
+        CreateAdvertisePanel(None)
 
