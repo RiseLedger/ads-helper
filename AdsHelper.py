@@ -1,6 +1,5 @@
 import wx
 from Config import Config
-from ContextMenu import ContextMenu
 from MainAdvertisePanel import MainAdvertisePanel
 from CreateAdvertisePanel import CreateAdvertisePanel
 from EditAdvertisePanel import EditAdvertisePanel
