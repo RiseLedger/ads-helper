@@ -43,7 +43,7 @@ class AdsHelper(wx.Frame):
             self.Bind(wx.EVT_MENU, self.onPanelSwitch, id=val)
 
     def createGUIWindow(self):
-        self.SetSize((350, 130))
+        self.SetSize((720, 480))
         self.SetTitle('Ads Helper')
         self.Centre()
         self.Show(True)
@@ -69,16 +69,15 @@ class AdsHelper(wx.Frame):
             self.main_panel.Show()
             self.create_panel.Hide()
             self.edit_panel.Hide()
-            self.Layout()
 
         if event.GetId() == 2:
             self.main_panel.Hide()
             self.create_panel.Show()
             self.edit_panel.Hide()
-            self.Layout()
 
         if event.GetId() == 3:
             self.main_panel.Hide()
             self.create_panel.Hide()
             self.edit_panel.Show()
-            self.Layout()
+
+        self.Layout()
