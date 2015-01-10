@@ -1,0 +1,18 @@
+{
+    "url" : "http://999.md/add?category=phone-and-communication&subcategory=phone-and-communication%2Fmobile-phones&offer_type=778",
+    "data" : [
+        {"select" : "//*[@id=\"control_589\"]/option[4]"},
+        {"select" : "//*[@id=\"control_590\"]/option[8]"},
+        {"select" : "//*[@id=\"control_591\"]/option[2]"},
+        {"select" : "//*[@id=\"control_592\"]/option[4]"},
+        {"select" : "//*[@id=\"control_593\"]/option[2]"},
+        {"check" : "//*[@id=\"js-add-form\"]/section[3]/div/div[1]/label/input"},
+        {"check" : "//*[@id=\"js-add-form\"]/section[3]/div/div[8]/label/input"},
+        {"number" : ["//*[@id=\"control_2\"]", 22]},
+        {"select" : "//*[@id=\"js-add-form\"]/section[4]/div/div/dl[2]/dd/select/option[1]"},
+        {"select" : "//*[@id=\"control_7\"]/option[8]"},
+        {"input" : ["//*[@id=\"control_12\"]", "This is the title"]},
+        {"textarea" : ["//*[@id=\"control_13\"]", "This is the test message that will be placed on the page"]},
+        {"check" : "//*[@id=\"agree\"]"}
+    ]
+}

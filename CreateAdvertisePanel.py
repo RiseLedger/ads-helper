@@ -1,13 +1,16 @@
 import wx
 from AdsPanel import AdsPanel
+from SaveAdvertise import SaveAdvertise
 
 
 class CreateAdvertisePanel(wx.Panel, AdsPanel):
 
-    input_type = ['Text', 'Checkbox', 'Message']
+    input_type = ['select', 'check', 'input', 'number', 'textarea']
     selected_widget = None
     dynamic_sizer = None
     widgets_list = []
+    name = None
+    url = None
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
@@ -19,11 +22,20 @@ class CreateAdvertisePanel(wx.Panel, AdsPanel):
     def createGUILayout(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
 
-        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        hbox0 = wx.BoxSizer(wx.HORIZONTAL)
         st1 = wx.StaticText(self, label='Advertise Name')
-        hbox1.Add(st1, flag=wx.RIGHT, border=8)
-        tc = wx.TextCtrl(self)
-        hbox1.Add(tc, proportion=1)
+        hbox0.Add(st1, flag=wx.RIGHT, border=8)
+        self.name = wx.TextCtrl(self)
+        hbox0.Add(self.name, proportion=1)
+        vbox.Add(hbox0, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+
+        vbox.Add((-1, 10))
+
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        url_label = wx.StaticText(self, label='Advertise URL')
+        hbox1.Add(url_label, flag=wx.RIGHT, border=8)
+        self.url = wx.TextCtrl(self)
+        hbox1.Add(self.url, proportion=1)
         vbox.Add(hbox1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
 
         vbox.Add((-1, 10))
@@ -36,27 +48,31 @@ class CreateAdvertisePanel(wx.Panel, AdsPanel):
         add_button = wx.Button(self, label="Add")
         add_button.Bind(wx.EVT_BUTTON, self.onWidgetAdd);
         hbox2.Add(add_button, flag=wx.LEFT, border=8)
-
         vbox.Add(hbox2, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
 
         self.dynamic_sizer = wx.BoxSizer(wx.VERTICAL)
-
         vbox.Add(self.dynamic_sizer, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+
+        hbox3 = wx.BoxSizer(wx.HORIZONTAL)
+        save_button = wx.Button(self, label="Save Advertise")
+        save_button.Bind(wx.EVT_BUTTON, self.saveAdvertise)
+        hbox3.Add(save_button)
+        vbox.Add(hbox3, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
 
         self.SetSizer(vbox)
 
     def onWidgetAdd(self, e):
-        if self.selected_widget == 'Text':
-            self.addTextWidget()
-        elif self.selected_widget == 'Checkbox':
-            self.addCheckboxWidget()
-        elif self.selected_widget == 'Message':
-            self.addMessageWidget()
+        if self.selected_widget == 'input' or self.selected_widget == 'number':
+            self.addTextWidget(self.selected_widget)
+        elif self.selected_widget == 'check' or self.selected_widget == 'select':
+            self.addCheckboxWidget(self.selected_widget)
+        elif self.selected_widget == 'textarea':
+            self.addMessageWidget(self.selected_widget)
 
     def onFieldSelect(self, e):
         self.selected_widget = e.GetString()
 
-    def addTextWidget(self):
+    def addTextWidget(self, type):
         row_of_widgets = wx.BoxSizer(wx.HORIZONTAL)
         widget_text = wx.TextCtrl(self)
         widget_code = wx.TextCtrl(self)
@@ -71,25 +87,25 @@ class CreateAdvertisePanel(wx.Panel, AdsPanel):
         self.dynamic_sizer.AddSpacer(5)
 
         self.widgets_list.append({
-            "type" : "text",
+            "type" : type,
             "code" : widget_code,
             "text" : widget_text
         })
         self.Layout()
 
 
-    def addCheckboxWidget(self):
+    def addCheckboxWidget(self, type):
         checkbox_widget = wx.TextCtrl(self)
         checkbox_widget.SetValue('XPath Code')
         self.dynamic_sizer.Add(checkbox_widget, 1, wx.EXPAND|wx.ALL)
         self.dynamic_sizer.AddSpacer(5)
         self.widgets_list.append({
-            "type" : "checkbox",
+            "type" : type,
             "code" : checkbox_widget
         })
         self.Layout()
 
-    def addMessageWidget(self):
+    def addMessageWidget(self, type):
         row_of_widgets = wx.BoxSizer(wx.HORIZONTAL)
         widget_textarea = wx.TextCtrl(self, style=wx.TE_MULTILINE)
         widget_code_textarea = wx.TextCtrl(self)
@@ -104,8 +120,11 @@ class CreateAdvertisePanel(wx.Panel, AdsPanel):
         self.dynamic_sizer.AddSpacer(5)
 
         self.widgets_list.append({
-            "type" : "textarea",
+            "type" : type,
             "code" : widget_code_textarea,
             "text" : widget_textarea
         })
         self.Layout()
+
+    def saveAdvertise(self, e):
+        SaveAdvertise(self.name.GetValue(), self.url.GetValue(), self.widgets_list)
