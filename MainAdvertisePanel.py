@@ -1,14 +1,18 @@
 import wx
+from Terminal import Terminal
 from AdsPanel import AdsPanel
 
 
 class MainAdvertisePanel(wx.Panel, AdsPanel):
     add_ad = None
     edit_ad = None
+    ad_to_publish = None
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent=parent)
         self.init()
+
+        Terminal.startSelenium()
 
     def init(self):
         self.createGUILayout()
@@ -33,6 +37,8 @@ class MainAdvertisePanel(wx.Panel, AdsPanel):
         self.add_ad = wx.Button(self, label='Publish Selected Advertise', size=(170, 30))
         self.edit_ad = wx.Button(self, label='Edit Selected Advertise', size=(170, 30))
 
+        self.add_ad.Bind(wx.EVT_BUTTON, self.onPublishAd)
+
         h_publish_edit_ads.Add(self.add_ad)
         h_publish_edit_ads.Add(self.edit_ad)
         vbox.Add(h_publish_edit_ads, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=10)
@@ -40,4 +46,7 @@ class MainAdvertisePanel(wx.Panel, AdsPanel):
         self.SetSizer(vbox)
 
     def onAdvertiseSelect(self, e):
-        print e.GetString()
+        self.ad_to_publish = e.GetString()
+
+    def onPublishAd(self, e):
+        Terminal.publishAd()
