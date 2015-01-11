@@ -1,4 +1,5 @@
 import wx
+import threading
 from Terminal import Terminal
 from AdsPanel import AdsPanel
 
@@ -12,7 +13,9 @@ class MainAdvertisePanel(wx.Panel, AdsPanel):
         wx.Panel.__init__(self, parent=parent)
         self.init()
 
-        Terminal.startSelenium()
+        t = threading.Thread(target=Terminal.startSelenium)
+        t.daemon = True
+        t.start()
 
     def init(self):
         self.createGUILayout()
